@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA NAIL STUDIO — Rezerwacja</title>
+  <meta name="description" content="AURA NAIL STUDIO — delikatne stylizacje paznokci, manicure i pedicure z rezerwacją online." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css" />
+
+  <style>
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --landing-max: 1240px;
+      --sky: #74cfff;
+      --sky-deep: #43aeea;
+      --sky-light: #dff5ff;
+      --cloud: #ffffff;
+      --ice: #f5fbff;
+      --text-main: #17324a;
+      --text-soft: #6f8798;
+      --green: #39c787;
+      --red: #ff7b91;
+      --header-desktop-h: 90px;
+      --header-mobile-top-h: 82px;
+      --header-mobile-tabs-h: 66px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Manrope", sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255,255,255,0.98), transparent 24%),
+        radial-gradient(circle at 78% 4%, rgba(188,232,255,0.72), transparent 26%),
+        radial-gradient(circle at 50% 112%, rgba(158,220,255,0.5), transparent 32%),
+        linear-gradient(180deg, #f8fcff 0%, #edf8ff 46%, #fdfefe 100%);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 20% 16%, rgba(255,255,255,0.78) 0 9%, transparent 26%),
+        radial-gradient(ellipse at 82% 22%, rgba(255,255,255,0.72) 0 8%, transparent 24%),
+        radial-gradient(ellipse at 45% 70%, rgba(255,255,255,0.52) 0 9%, transparent 26%);
+      opacity: .9;
+      z-index: 0;
+    }
+
+    .bg-grid, .bg-orb, .bg-logo { pointer-events: none; }
+
+    .screen-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at center, rgba(116,207,255,0.22), transparent 34%), linear-gradient(180deg, rgba(255,255,255,0.55), transparent 52%);
+      transition: opacity 160ms ease;
+    }
+
+    .screen-flash.active { opacity: 1; }
+
+    .landing-container { width: min(var(--landing-max), calc(100% - 28px)); margin: 0 auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 150;
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(247,252,255,0.76));
+      backdrop-filter: blur(20px) saturate(130%);
+      -webkit-backdrop-filter: blur(20px) saturate(130%);
+      border-bottom: 1px solid rgba(116,207,255,0.2);
+      box-shadow: 0 16px 42px rgba(77,160,216,0.08);
+    }
+
+    .desktop-header { min-height: var(--header-desktop-h); display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .desktop-left, .desktop-right { display: flex; align-items: center; gap: 18px; flex: 1; }
+    .desktop-right { justify-content: flex-end; }
+    .desktop-center { display: flex; justify-content: center; flex-shrink: 0; }
+
+    .desktop-logo, .mobile-brand, .booking-logo-mark {
+      text-decoration: none;
+      color: #14324a;
+      display: inline-grid;
+      place-items: center;
+      font-family: "Sora", sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+    }
+
+    .desktop-logo {
+      width: 128px;
+      height: 52px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #fff, rgba(225,246,255,0.92));
+      border: 1px solid rgba(116,207,255,0.26);
+      box-shadow: 0 14px 34px rgba(78,174,230,0.15), inset 0 1px 0 rgba(255,255,255,0.9);
+      font-size: 22px;
+    }
+
+    .desktop-logo span, .mobile-brand span, .booking-logo-mark span { color: var(--sky-deep); }
+
+    .desktop-nav { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+    .desktop-nav a { position: relative; color: rgba(23,50,74,0.76); text-decoration: none; font-size: 14px; font-weight: 800; letter-spacing: 0.02em; transition: color .2s ease; }
+    .desktop-nav a::after { content: ""; position: absolute; left: 0; bottom: -8px; width: 0; height: 2px; border-radius: 999px; background: linear-gradient(90deg, var(--sky), var(--sky-deep)); transition: width .22s ease; }
+    .desktop-nav a:hover { color: #102a40; }
+    .desktop-nav a:hover::after { width: 100%; }
+
+    .desktop-call-btn { min-height: 44px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(116,207,255,0.26); text-decoration: none; font-size: 13px; font-weight: 900; letter-spacing: 0.06em; text-transform: uppercase; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; color: #17324a; background: rgba(255,255,255,0.62); box-shadow: 0 14px 30px rgba(77,160,216,0.1); }
+    .desktop-call-btn:hover { transform: translateY(-1px); border-color: rgba(67,174,234,0.42); }
+
+    .mobile-topbar, .mobile-tabs, .mobile-drawer { display: none; }
+    .mobile-topbar { min-height: var(--header-mobile-top-h); padding: 0 14px; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(116,207,255,0.18); }
+    .mobile-brand { width: 112px; height: 48px; border-radius: 999px; background: rgba(255,255,255,0.72); border: 1px solid rgba(116,207,255,0.22); font-size: 20px; }
+    .mobile-icon-btn, .mobile-call-btn { width: 48px; height: 48px; border-radius: 16px; border: 1px solid rgba(116,207,255,0.25); background: rgba(255,255,255,0.66); color: #42aee8; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; text-decoration: none; box-shadow: 0 12px 26px rgba(77,160,216,0.1); }
+    .mobile-icon-btn { padding: 0; flex-direction: column; gap: 5px; cursor: pointer; }
+    .mobile-icon-btn span { display: block; width: 20px; height: 2px; border-radius: 999px; background: currentColor; }
+    .mobile-call-btn svg { width: 22px; height: 22px; }
+    .mobile-tabs { min-height: var(--header-mobile-tabs-h); padding: 0 8px; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid rgba(116,207,255,0.16); }
+    .mobile-tabs::-webkit-scrollbar { display: none; }
+    .mobile-tab { min-height: 42px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; text-decoration: none; color: rgba(23,50,74,0.76); background: rgba(255,255,255,0.62); border: 1px solid rgba(116,207,255,0.18); font-size: 13px; font-weight: 800; flex-shrink: 0; }
+    .mobile-tab.active, .mobile-tab:hover { color: #0d3048; background: linear-gradient(180deg, #fff, #dff5ff); border-color: rgba(67,174,234,0.32); }
+    .mobile-drawer { position: absolute; top: 100%; left: 0; right: 0; background: rgba(248,253,255,0.98); border-bottom: 1px solid rgba(116,207,255,0.18); padding: 10px 12px 14px; }
+    .mobile-drawer.open { display: block; }
+    .mobile-drawer-nav { display: grid; gap: 8px; }
+    .mobile-drawer-nav a { min-height: 52px; padding: 0 16px; border-radius: 18px; display: flex; align-items: center; text-decoration: none; color: var(--text-main); background: rgba(255,255,255,0.68); border: 1px solid rgba(116,207,255,0.18); font-size: 15px; font-weight: 800; }
+
+    .landing-wrap { display: grid; gap: 20px; padding: 20px 0 40px; position: relative; z-index: 1; }
+    #hero, #manifest, #pricing, #location, #contact { scroll-margin-top: 120px; }
+    .hero-section { min-height: calc(100vh - var(--header-desktop-h) - 20px); }
+
+    .hero-card, .section-card {
+      border-radius: 38px;
+      border: 1px solid rgba(116,207,255,0.24);
+      background:
+        radial-gradient(circle at 18% 14%, rgba(255,255,255,0.95), transparent 26%),
+        radial-gradient(circle at 88% 10%, rgba(190,234,255,0.58), transparent 30%),
+        linear-gradient(180deg, rgba(255,255,255,0.78), rgba(239,249,255,0.62));
+      box-shadow: 0 34px 90px rgba(67,174,234,0.14), 0 12px 36px rgba(43,93,130,0.08), inset 0 1px 0 rgba(255,255,255,0.92);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-card::before, .section-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 10% 100%, rgba(255,255,255,0.78), transparent 30%),
+        radial-gradient(ellipse at 92% 92%, rgba(210,244,255,0.62), transparent 28%),
+        linear-gradient(180deg, rgba(255,255,255,0.38), transparent 52%);
+      pointer-events: none;
+    }
+    .hero-card::after, .section-card::after {
+      content: "";
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      pointer-events: none;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.62), inset 0 -1px 0 rgba(116,207,255,0.12);
+    }
+
+    .hero-grid { position: relative; z-index: 1; min-height: 720px; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18px; padding: 28px; align-items: stretch; }
+    .hero-copy { display: flex; flex-direction: column; justify-content: center; gap: 16px; max-width: 680px; }
+    .section-chip { width: fit-content; min-height: 42px; padding: 0 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(116,207,255,0.28); background: rgba(255,255,255,0.68); color: #438db8; font-size: 13px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; box-shadow: 0 12px 28px rgba(77,160,216,0.1), inset 0 1px 0 rgba(255,255,255,0.8); position: relative; z-index: 1; }
+    .section-chip::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--sky); box-shadow: 0 0 18px rgba(67,174,234,0.45); }
+    .hero-title { margin: 0; font-family: "Sora", sans-serif; font-size: clamp(50px, 8vw, 104px); line-height: 0.92; letter-spacing: -0.08em; color: #12324a; max-width: 10ch; text-shadow: 0 10px 30px rgba(67,174,234,0.1); }
+    .hero-sub { margin: 0; color: var(--text-soft); font-size: 18px; line-height: 1.8; max-width: 600px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+    .hero-side { display: grid; gap: 16px; align-content: end; }
+
+    .glass-card { border-radius: 30px; border: 1px solid rgba(116,207,255,0.22); background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(244,252,255,0.38)); box-shadow: 0 22px 52px rgba(67,174,234,0.13), inset 0 1px 0 rgba(255,255,255,0.82); backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%); }
+    .hero-photo { min-height: 420px; overflow: hidden; position: relative; background: radial-gradient(circle at 50% 16%, rgba(255,255,255,0.98), transparent 28%), linear-gradient(160deg, #e5f7ff, #fff); }
+    .hero-photo::before { content: ""; position: absolute; inset: 30px; border-radius: 999px; background: radial-gradient(circle, rgba(116,207,255,0.22), transparent 68%); filter: blur(18px); }
+    .hero-photo__mock { position: relative; z-index: 1; height: 100%; min-height: 420px; display: grid; place-items: center; padding: 32px; }
+    .nail-orbit { width: min(340px, 82%); aspect-ratio: 1; border-radius: 999px; background: radial-gradient(circle at 36% 28%, #fff, #dff5ff 52%, #a9e4ff 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 36px 70px rgba(67,174,234,0.22); position: relative; display: grid; place-items: center; animation: floatSoft 6s ease-in-out infinite; }
+    .nail-orbit::before, .nail-orbit::after { content: ""; position: absolute; border-radius: 999px; background: rgba(255,255,255,0.88); box-shadow: 0 18px 42px rgba(67,174,234,0.12); }
+    .nail-orbit::before { width: 46%; height: 23%; left: -8%; bottom: 16%; }
+    .nail-orbit::after { width: 36%; height: 18%; right: -6%; top: 20%; }
+    .nail-orbit span { font-family: "Sora", sans-serif; font-size: clamp(42px, 6vw, 70px); letter-spacing: -0.08em; color: #12324a; }
+    @keyframes floatSoft { 0%,100%{ transform: translateY(0) rotate(-1deg);} 50%{ transform: translateY(-12px) rotate(1deg);} }
+    .hero-info { padding: 20px; display: grid; gap: 8px; }
+    .hero-info span { color: var(--sky-deep); font-size: 12px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; }
+    .hero-info strong { font-family: "Sora", sans-serif; font-size: 24px; line-height: 1.02; letter-spacing: -0.05em; color: #12324a; }
+    .hero-info p { margin: 0; color: var(--text-soft); line-height: 1.7; font-size: 15px; }
+
+    .btn { min-height: 54px; padding: 0 22px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid rgba(116,207,255,0.26); text-decoration: none; cursor: pointer; color: var(--text-main); background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(239,250,255,0.62)); font-size: 14px; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 14px 30px rgba(67,174,234,0.12); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, color .2s ease; }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(67,174,234,0.42); color: #0c2b42; box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 18px 36px rgba(67,174,234,0.16); }
+    .btn-primary { color: #07304a; border-color: rgba(67,174,234,0.34); background: linear-gradient(180deg, #ffffff 0%, #caf0ff 45%, #79d1ff 100%); box-shadow: 0 0 0 1px rgba(255,255,255,0.7), 0 20px 42px rgba(67,174,234,0.22), 0 0 34px rgba(116,207,255,0.16); }
+
+    .section { padding: 0; }
+    .section-wrap { padding: 26px; position: relative; z-index: 1; }
+    .section-head { display: grid; gap: 10px; max-width: 860px; margin-bottom: 18px; }
+    .section-head h2 { margin: 0; font-family: "Sora", sans-serif; font-size: clamp(34px, 5vw, 68px); line-height: 0.96; letter-spacing: -0.06em; color: #12324a; max-width: 13ch; }
+    .section-head p { margin: 0; color: var(--text-soft); line-height: 1.75; font-size: 16px; max-width: 760px; }
+
+    .manifest-grid { display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 18px; }
+    .manifest-vertical { min-height: 540px; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; background: radial-gradient(circle at 50% 30%, rgba(255,255,255,0.9), transparent 28%), linear-gradient(160deg, rgba(218,246,255,0.7), rgba(255,255,255,0.5)); }
+    .manifest-vertical__text { writing-mode: vertical-rl; transform: rotate(180deg); font-family: "Sora", sans-serif; font-size: clamp(56px, 8vw, 108px); line-height: 0.8; letter-spacing: -0.08em; color: #1a587d; text-shadow: 0 18px 42px rgba(67,174,234,0.16); }
+    .manifest-copy { display: grid; gap: 14px; }
+    .manifest-line { padding: 20px; }
+    .manifest-line p { margin: 0; color: #24455c; font-size: 16px; line-height: 1.8; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .pricing-card { padding: 24px; position: relative; overflow: hidden; transition: transform .2s ease, border-color .2s ease; }
+    .pricing-card::before { content: ""; position: absolute; width: 160px; height: 160px; right: -60px; top: -70px; background: radial-gradient(circle, rgba(116,207,255,0.22), transparent 68%); }
+    .pricing-card:hover { transform: translateY(-4px); border-color: rgba(67,174,234,0.36); }
+    .pricing-card__top { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 14px; position: relative; z-index: 1; }
+    .pricing-card__top strong { font-family: "Sora", sans-serif; font-size: 28px; line-height: 0.96; letter-spacing: -0.06em; color: #12324a; }
+    .pricing-card__price { font-family: "Sora", sans-serif; font-size: 18px; color: var(--sky-deep); font-weight: 900; white-space: nowrap; }
+    .pricing-card p { margin: 0 0 18px; color: var(--text-soft); line-height: 1.8; font-size: 15px; position: relative; z-index: 1; }
+
+    .location-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 16px; align-items: stretch; }
+    .location-map { min-height: 520px; overflow: hidden; position: relative; }
+    .location-map iframe { width: 100%; height: 100%; border: 0; display: block; filter: saturate(0.82) contrast(1.02) brightness(1.03); opacity: 0.92; }
+    .location-map::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at center, transparent 46%, rgba(204,238,255,0.32) 100%); pointer-events: none; }
+    .location-side { padding: 22px; display: grid; gap: 18px; align-content: start; }
+    .location-preview { min-height: 260px; border-radius: 24px; overflow: hidden; border: 1px solid rgba(116,207,255,0.22); display: grid; place-items: center; position: relative; background: radial-gradient(circle at 50% 40%, rgba(255,255,255,0.94), transparent 28%), linear-gradient(160deg, #dff5ff, #fff); }
+    .location-preview__inner { position: relative; z-index: 1; display: grid; gap: 10px; justify-items: center; text-align: center; }
+    .location-preview__inner strong { font-family: "Sora", sans-serif; font-size: 34px; line-height: 0.96; letter-spacing: -0.07em; color: #12324a; }
+    .location-preview__inner span { color: #438db8; font-size: 13px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+    .location-copy { display: grid; gap: 10px; }
+    .location-copy strong { font-family: "Sora", sans-serif; font-size: 28px; line-height: 0.96; letter-spacing: -0.06em; color: #12324a; max-width: 12ch; }
+    .location-copy p { margin: 0; color: var(--text-soft); line-height: 1.78; font-size: 15px; }
+
+    .contact-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 16px; align-items: start; }
+    .contact-card, .status-card { padding: 22px; }
+    .contact-form { display: grid; gap: 14px; margin-top: 0; }
+    .contact-note { color: var(--text-soft); font-size: 14px; line-height: 1.6; margin-top: 10px; }
+    .status-card { display: grid; gap: 16px; align-content: start; }
+    .status-pill { width: fit-content; min-height: 42px; padding: 0 14px; border-radius: 999px; display: inline-flex; align-items: center; gap: 10px; border: 1px solid rgba(116,207,255,0.22); background: rgba(255,255,255,0.66); font-size: 13px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+    .status-pill::before { content: ""; width: 10px; height: 10px; border-radius: 999px; background: currentColor; box-shadow: 0 0 14px currentColor; }
+    .status-pill.open { color: var(--green); }
+    .status-pill.closed { color: var(--red); }
+    .status-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .status-list li { min-height: 54px; padding: 0 16px; border-radius: 18px; border: 1px solid rgba(116,207,255,0.18); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(255,255,255,0.62); color: #31586f; font-size: 14px; font-weight: 800; }
+    .social-icons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .social-icon { width: 54px; height: 54px; border-radius: 18px; border: 1px solid rgba(116,207,255,0.22); display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(180deg, rgba(255,255,255,0.78), rgba(239,250,255,0.62)); color: #17324a; text-decoration: none; transition: transform .2s ease, border-color .2s ease; box-shadow: 0 12px 26px rgba(67,174,234,0.12); }
+    .social-icon:hover { transform: translateY(-2px); border-color: rgba(67,174,234,0.38); }
+    .social-icon svg { width: 22px; height: 22px; }
+    .section-button-full { width: 100%; }
+
+    .floating-book { position: fixed; right: 18px; bottom: 18px; z-index: 120; min-width: 172px; min-height: 58px; box-shadow: 0 24px 54px rgba(67,174,234,0.24), 0 0 34px rgba(116,207,255,0.18); opacity: 0; pointer-events: none; transform: translateY(20px); transition: opacity .22s ease, transform .22s ease; }
+    .floating-book.is-visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .floating-book.hidden-on-contact { opacity: 0; pointer-events: none; transform: translateY(20px); }
+
+    .booking-overlay { position: fixed; inset: 0; z-index: 180; display: none; align-items: stretch; justify-content: center; padding: 24px; background: linear-gradient(180deg, rgba(227,246,255,0.74), rgba(250,253,255,0.88)); backdrop-filter: blur(20px) saturate(135%); -webkit-backdrop-filter: blur(20px) saturate(135%); }
+    .booking-overlay.open { display: flex; }
+    .booking-shell { width: min(1180px, 100%); display: grid; gap: 14px; align-content: start; overflow: auto; padding-right: 4px; }
+    .booking-topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .booking-topbar__left { display: flex; align-items: center; gap: 14px; }
+    .booking-logo-mark { width: 108px; height: 48px; border-radius: 999px; background: rgba(255,255,255,0.76); border: 1px solid rgba(116,207,255,0.24); font-size: 22px; box-shadow: 0 14px 34px rgba(67,174,234,0.14); }
+    .booking-topbar__copy { display: grid; gap: 4px; }
+    .booking-topbar__copy span { color: var(--sky-deep); font-size: 11px; font-weight: 900; letter-spacing: 0.16em; text-transform: uppercase; }
+    .booking-topbar__copy strong { font-family: "Sora", sans-serif; font-size: 22px; line-height: 1; letter-spacing: -0.04em; color: #12324a; }
+    .booking-close { min-width: 52px; width: 52px; height: 52px; padding: 0; border-radius: 999px; font-size: 22px; line-height: 1; }
+
+    @media (max-width: 1120px) { .hero-grid, .manifest-grid, .pricing-grid, .location-grid, .contact-grid { grid-template-columns: 1fr; } .hero-grid { min-height: auto; } .manifest-vertical { min-height: 220px; } .manifest-vertical__text { writing-mode: initial; transform: none; } .location-copy strong { max-width: none; } }
+    @media (max-width: 900px) { .desktop-header { display: none; } .mobile-topbar { display: flex; } .mobile-tabs { display: flex; } .landing-wrap { gap: 14px; padding-top: 12px; } .landing-container { width: min(100%, calc(100% - 14px)); } .hero-section { min-height: auto; } .hero-card, .section-card { border-radius: 28px; } .hero-grid { grid-template-columns: 1fr; padding: 18px; gap: 14px; } .hero-title { font-size: 42px; max-width: none; line-height: 0.95; } .hero-sub { font-size: 15px; line-height: 1.65; } .hero-side { display: none; } .section-wrap { padding: 18px; } .section-head h2 { font-size: 34px; max-width: none; } .section-head p { font-size: 15px; } .floating-book { left: 12px; right: 12px; width: auto; min-width: unset; bottom: 12px; } .booking-overlay { padding: 12px; } .booking-logo-mark { width: 92px; } .booking-topbar__copy strong { font-size: 18px; } }
+    @media (max-width: 560px) { .mobile-topbar { padding: 0 12px; } .mobile-brand { width: 102px; } .hero-title { font-size: 36px; } .section-head h2 { font-size: 30px; } .btn, .btn-primary { width: 100%; } .hero-actions { display: grid; grid-template-columns: 1fr; } .status-list li { padding: 0 12px; font-size: 13px; } .contact-card, .status-card, .location-side { padding: 16px; } }
+  </style>
+</head>
+<body>
+  <div class="bg-orb bg-orb-1"></div><div class="bg-orb bg-orb-2"></div><div class="bg-grid"></div><div class="bg-logo"></div><div class="screen-flash" id="screenFlash"></div>
+
+  <header class="site-header" id="top">
+    <div class="landing-container desktop-header">
+      <div class="desktop-left"><nav class="desktop-nav"><a href="#hero">Start</a><a href="#manifest">O nas</a><a href="#pricing">Usługi</a></nav></div>
+      <div class="desktop-center"><a href="#top" class="desktop-logo">AU<span>RA</span></a></div>
+      <div class="desktop-right"><nav class="desktop-nav"><a href="#location">Dojazd</a><a href="#contact">Kontakt</a></nav><a href="tel:+48123456789" class="desktop-call-btn">Zadzwoń</a></div>
+    </div>
+    <div class="mobile-topbar">
+      <button class="mobile-icon-btn" id="mobileMenuToggle" type="button" aria-label="Otwórz menu"><span></span><span></span><span></span></button>
+      <a href="#top" class="mobile-brand">AU<span>RA</span></a>
+      <a href="tel:+48123456789" class="mobile-call-btn" aria-label="Zadzwoń"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.86 19.86 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.86 19.86 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.35 1.77.68 2.6a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.48-1.25a2 2 0 0 1 2.11-.45c.83.33 1.7.56 2.6.68A2 2 0 0 1 22 16.92z"/></svg></a>
+    </div>
+    <div class="mobile-tabs"><a href="#hero" class="mobile-tab active">Rezerwacja</a><a href="#manifest" class="mobile-tab">O nas</a><a href="#pricing" class="mobile-tab">Usługi</a><a href="#location" class="mobile-tab">Dojazd</a><a href="#contact" class="mobile-tab">Kontakt</a></div>
+    <div class="mobile-drawer" id="mobileDrawer"><nav class="mobile-drawer-nav"><a href="#hero">Rezerwacja</a><a href="#manifest">O nas</a><a href="#pricing">Usługi</a><a href="#location">Jak dojechać</a><a href="#contact">Kontakt</a></nav></div>
+  </header>
+
+  <main class="landing-wrap">
+    <section class="hero-section" id="hero"><div class="landing-container"><div class="hero-card"><div class="hero-grid">
+      <div class="hero-copy"><div class="section-chip">AURA NAIL STUDIO</div><h1 class="hero-title">Paznokcie lekkie jak chmura.</h1><p class="hero-sub">Manicure, pedicure i stylizacje żelowe w spokojnym, jasnym studio. Wybierz usługę, termin i zarezerwuj wizytę bez pisania tam i z powrotem.</p><div class="hero-actions"><button class="btn btn-primary" type="button" data-open-booking>Zarezerwuj termin</button><button class="btn" type="button" onclick="openMapsRoute()">Jak dojechać</button></div></div>
+      <div class="hero-side"><article class="glass-card hero-photo"><div class="hero-photo__mock"><div class="nail-orbit"><span>AURA</span></div></div></article><article class="glass-card hero-info"><span>MANICURE &amp; PEDICURE</span><strong>Subtelnie, czysto, dokładnie.</strong><p>Studio dla stylizacji, które nie krzyczą. One po prostu wyglądają drogo.</p></article></div>
+    </div></div></div></section>
+
+    <section class="section" id="manifest"><div class="landing-container"><div class="section-card"><div class="section-wrap"><div class="section-head"><div class="section-chip">O NAS</div><h2>Tu detal robi cały efekt.</h2><p>Nie robimy paznokci “na szybko”. Robimy je tak, żeby kolor, kształt i wykończenie wyglądały czysto z bliska i pięknie w codziennym świetle.</p></div><div class="manifest-grid"><div class="glass-card manifest-vertical"><div class="manifest-vertical__text">AURA</div></div><div class="manifest-copy"><article class="glass-card manifest-line"><p>Pracujemy spokojnie, dokładnie i bez chaosu. Każda stylizacja zaczyna się od rozmowy o tym, jaki efekt chcesz nosić na dłoniach.</p></article><article class="glass-card manifest-line"><p>Lubimy mleczne odcienie, clean girl manicure, delikatny french i stylizacje, które pasują do pracy, randki i zwykłego poniedziałku.</p></article><article class="glass-card manifest-line"><p>Najważniejsze są proporcje: długość, kształt, skórki i światło na topie. To właśnie od tego paznokcie wyglądają “premium”.</p></article></div></div></div></div></div></section>
+
+    <section class="section" id="pricing"><div class="landing-container"><div class="section-card"><div class="section-wrap"><div class="section-head"><div class="section-chip">USŁUGI</div><h2>Wybierz stylizację i przejdź do terminu.</h2><p>Ceny w systemie rezerwacji są już przypisane do konkretnych usług. Bez zgadywania, bez pisania “a ile?”.</p></div><div class="pricing-grid"><article class="glass-card pricing-card"><div class="pricing-card__top"><strong>Manicure hybrydowy</strong><div class="pricing-card__price">120 PLN</div></div><p>Kolor, skórki i idealnie czyste wykończenie. Najczęstszy wybór na co dzień.</p><button class="btn section-button-full" type="button" data-open-booking>Zarezerwuj termin</button></article><article class="glass-card pricing-card"><div class="pricing-card__top"><strong>Żel / przedłużenie</strong><div class="pricing-card__price">180–240 PLN</div></div><p>Budowa, kształt i długość dobrane tak, żeby dłonie wyglądały lekko.</p><button class="btn section-button-full" type="button" data-open-booking>Zarezerwuj termin</button></article><article class="glass-card pricing-card"><div class="pricing-card__top"><strong>Pedicure</strong><div class="pricing-card__price">150 PLN</div></div><p>Estetyka, komfort i świeży efekt, który od razu porządkuje całość.</p><button class="btn section-button-full" type="button" data-open-booking>Zarezerwuj termin</button></article></div></div></div></div></section>
+
+    <section class="section" id="location"><div class="landing-container"><div class="section-card"><div class="section-wrap"><div class="section-head"><div class="section-chip">JAK DO NAS TRAFIĆ</div><h2>Jedno kliknięcie i jesteś w drodze.</h2><p>Otwórz mapę, sprawdź trasę i przyjdź kilka minut wcześniej, żeby spokojnie wybrać kolor.</p></div><div class="location-grid"><div class="glass-card location-map"><iframe title="AURA map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Warszawa&z=13&output=embed"></iframe></div><div class="glass-card location-side"><div class="location-preview"><div class="location-preview__inner"><strong>AURA</strong><span>NAIL STUDIO</span></div></div><div class="location-copy"><strong>Jasne studio, spokojna wizyta, zero zgadywania.</strong><p>W systemie wybierasz usługę, stylistkę, dzień i godzinę. Reszta zapisuje się automatycznie.</p></div><div class="hero-actions"><button class="btn btn-primary" type="button" onclick="openMapsRoute()">Jak dojechać</button></div></div></div></div></div></div></section>
+
+    <section class="section" id="contact"><div class="landing-container"><div class="section-card"><div class="section-wrap"><div class="section-head"><div class="section-chip">KONTAKT</div><h2>Zarezerwuj wizytę i przyjdź po świeży set.</h2><p>Najszybciej zrobisz to online. Bez czekania na odpowiedź w DM.</p></div><div class="contact-grid"><div class="glass-card contact-card"><div class="contact-form"><button class="btn btn-primary section-button-full" type="button" data-open-booking>Zarezerwuj termin</button></div><div class="contact-note">Wybierz usługę, stylistkę i wolną godzinę. Potwierdzenie zapisze się w kalendarzu.</div></div><div class="glass-card status-card"><div id="liveStatus" class="status-pill closed">Closed now</div><ul class="status-list"><li><span>Poniedziałek – Sobota</span><strong>10:00 – 20:00</strong></li><li><span>Niedziela</span><strong>10:00 – 18:00</strong></li></ul><div class="social-icons"><a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" stroke="none"></circle></svg></a><a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.7 3c.2 1.6 1.1 3 2.4 3.8.8.5 1.7.8 2.7.8v3.1c-1.4 0-2.9-.4-4.1-1.2v6.4c0 3.1-2.5 5.6-5.6 5.6S5.5 19 5.5 15.9s2.5-5.6 5.6-5.6c.3 0 .7 0 1 .1v3.2a2.7 2.7 0 0 0-1-.2 2.5 2.5 0 0 0 0 5 2.5 2.5 0 0 0 2.5-2.5V3h2.1Z"></path></svg></a><a class="social-icon" href="#" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V8c0-.9.2-1.5 1.5-1.5H17V3.7c-.4-.1-1.4-.2-2.6-.2-2.6 0-4.4 1.6-4.4 4.6v1.8H7V13h3v8h3.5Z"></path></svg></a></div></div></div></div></div></div></section>
+  </main>
+
+  <button class="btn btn-primary floating-book" type="button" data-open-booking>Zarezerwuj termin</button>
+
+  <section class="booking-overlay" id="bookingOverlay" aria-hidden="true"><div class="booking-shell"><div class="booking-topbar"><div class="booking-topbar__left"><div class="booking-logo-mark">AU<span>RA</span></div><div class="booking-topbar__copy"><span>AURA NAIL STUDIO</span><strong>Rezerwacja online</strong></div></div><button class="btn booking-close" type="button" id="bookingCloseBtn" aria-label="Zamknij booking">×</button></div><div class="wizard-host"><main class="app-shell"><section class="wizard-frame"><header class="wizard-top"><div class="wizard-top-row"><div class="wizard-top-copy"><div class="eyebrow">AURA NAIL STUDIO</div><h1 id="stepTitle">Dane kontaktowe</h1><p id="stepSubtitle">Wpisz swoje dane, aby rozpocząć rezerwację.</p></div><div class="step-pill" id="stepPill">1 / 8</div></div><div class="progress-wrap"><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="progress-text" id="progressText">13%</div></div></header><section class="wizard-card">
+    <section class="step active" data-step="1"><div class="step-content narrow"><div class="intro-card"><div class="intro-top"><div class="logo-box logo-box-image"><span>AURA</span></div><div class="intro-copy"><span class="section-kicker">AURA NAIL STUDIO</span><strong>Zarezerwuj wizytę bez czekania na odpowiedź</strong></div></div><div class="intro-divider"></div><div class="card-head"><h2>Wpisz imię i telefon</h2><p>To wystarczy, żeby przejść dalej i wybrać usługę oraz termin.</p></div><div class="intro-benefits"><div class="intro-benefit">Czysto</div><div class="intro-benefit">Spokojnie</div><div class="intro-benefit">Bez dzwonienia</div></div></div><label class="field"><span>Imię</span><input id="nameInput" type="text" placeholder="Np. Julia" autocomplete="name" /><small class="error" id="nameError"></small></label><label class="field"><span>Telefon</span><input id="phoneInput" type="tel" placeholder="+48 123 456 789" autocomplete="tel" /><small class="error" id="phoneError"></small></label></div></section>
+    <section class="step" data-step="2"><div class="step-content"><div class="card-head"><h2>Wybór usługi</h2><p>Najpierw wybierz kategorię, potem konkretną usługę.</p></div><div class="accordion-list" id="categoryAccordion"></div></div></section>
+    <section class="step" data-step="3"><div class="step-content narrow"><div class="card-head"><h2>Chcesz wybrać konkretną stylistkę?</h2><p>Możesz wybrać osobę albo przejść dalej bez wyboru.</p></div><div class="summary-list"><div class="summary-row"><span>Imię</span><strong data-bind="name">—</strong></div><div class="summary-row"><span>Telefon</span><strong data-bind="phone">—</strong></div><div class="summary-row"><span>Usługa</span><strong data-bind="serviceName">—</strong></div></div><div class="choice-actions"><button class="choice-btn choice-btn-strong" id="chooseBarberYes" type="button">Tak</button><button class="choice-btn choice-btn-strong" id="chooseBarberNo" type="button">Nie</button></div><div class="barberSkipBox hidden" id="barberSkipBox"><div class="summary-list"><div class="summary-row"><span>Stylistka</span><strong>Bez wyboru</strong></div><div class="summary-row"><span>Status</span><strong>Dobierzemy dostępną stylistkę</strong></div></div></div></div></section>
+    <section class="step" data-step="4"><div class="step-content narrow"><div class="card-head"><h2>Wybór stylistki</h2><p>Przeglądaj stylistki strzałkami i wybierz konkretną osobę.</p></div><div class="barber-slider-card"><div class="barber-slide-photo" id="barberSlidePhoto"><div class="barber-photo-img placeholder-master">A</div></div><div class="barber-slide-info"><strong id="barberSlideName">—</strong><p id="barberSlideDescription">—</p><div class="barber-langs" id="barberSlideLangs"></div></div><div class="barber-slider-controls"><button class="slider-arrow" id="barberPrevBtn" type="button">←</button><div class="slider-counter" id="barberCounter">1 / 3</div><button class="slider-arrow" id="barberNextBtn" type="button">→</button></div><button class="select-barber-btn" id="selectBarberBtn" type="button">Wybierz tę stylistkę</button></div></div></section>
+    <section class="step" data-step="5"><div class="step-content"><div class="card-head"><h2>Wybór daty</h2><p>Wybierz dogodny dzień wizyty.</p></div><div class="calendar-box"><div class="calendar-header"><button class="calendar-nav-btn" id="calendarPrevBtn" type="button">←</button><div class="calendar-title-wrap"><strong id="monthLabel">Miesiąc</strong><span id="calendarStatus">Dostępne terminy</span></div><button class="calendar-nav-btn" id="calendarNextBtn" type="button">→</button></div><div class="calendar-weekdays"><span>Pn</span><span>Wt</span><span>Śr</span><span>Cz</span><span>Pt</span><span>Sb</span><span>Nd</span></div><div class="calendar-month-grid" id="calendarGrid"></div><small class="error" id="dateError"></small></div></div></section>
+    <section class="step" data-step="6"><div class="step-content"><div class="card-head"><h2>Wybór godziny</h2><p>Wybierz dogodną godzinę wizyty.</p></div><div class="slots-box"><div class="calendar-top"><strong>Godziny</strong><span id="slotsStatus">Wybierz datę</span></div><div class="slots-grid" id="slotsGrid"></div><small class="error" id="timeError"></small></div></div></section>
+    <section class="step" data-step="7"><div class="step-content"><div class="card-head"><h2>Potwierdzenie danych</h2><p>Sprawdź wszystko przed zapisaniem wizyty.</p></div><div class="summary-list"><div class="summary-row"><span>Imię</span><strong data-bind="name">—</strong></div><div class="summary-row"><span>Telefon</span><strong data-bind="phone">—</strong></div><div class="summary-row"><span>Usługa</span><strong data-bind="serviceName">—</strong></div><div class="summary-row"><span>Stylistka</span><strong data-bind="barberName">—</strong></div><div class="summary-row"><span>Data</span><strong data-bind="dateText">—</strong></div><div class="summary-row"><span>Godzina</span><strong data-bind="time">—</strong></div><div class="summary-row"><span>Czas trwania</span><strong data-bind="serviceDuration">—</strong></div><div class="summary-row"><span>Cena</span><strong data-bind="servicePrice">—</strong></div></div><div class="info-note">Sprawdź dane i potwierdź rezerwację.</div><small class="error" id="submitError"></small></div></section>
+    <section class="step" data-step="8"><div class="step-content narrow center"><div class="success-icon">✓</div><div class="card-head center"><h2>Rezerwacja zapisana</h2><p>Do zobaczenia w AURA.</p></div><div class="summary-list"><div class="summary-row"><span>Usługa</span><strong data-bind="serviceName">—</strong></div><div class="summary-row"><span>Stylistka</span><strong data-bind="barberName">—</strong></div><div class="summary-row"><span>Data</span><strong data-bind="dateText">—</strong></div><div class="summary-row"><span>Godzina</span><strong data-bind="time">—</strong></div></div><div class="success-links"><a class="nav-btn nav-btn-primary" href="#" target="_blank" rel="noopener">Wróć na Instagram</a><a class="nav-btn" href="#" target="_blank" rel="noopener">Jak dojechać?</a><button class="nav-btn" type="button" onclick="callDogma()">Zadzwoń</button></div></div></section>
+  </section><footer class="wizard-nav"><button class="nav-btn" id="backBtn" type="button">Wstecz</button><button class="nav-btn nav-btn-primary" id="nextBtn" type="button">Dalej</button></footer></section></main></div></div></section>
+
+  <script>
+    function openMapsRoute() { const mapsQuery = encodeURIComponent("AURA NAIL STUDIO"); const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent); window.open(isIOS ? `https://maps.apple.com/?q=${mapsQuery}` : `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`, "_blank"); }
+    (function () { const flash = document.getElementById("screenFlash"); const overlay = document.getElementById("bookingOverlay"); const closeBtn = document.getElementById("bookingCloseBtn"); const openButtons = document.querySelectorAll("[data-open-booking]"); const clickable = document.querySelectorAll('a[href^="#"], .btn'); const liveStatus = document.getElementById("liveStatus"); const menuToggle = document.getElementById("mobileMenuToggle"); const mobileDrawer = document.getElementById("mobileDrawer"); const body = document.body; const floatingBook = document.querySelector(".floating-book"); const contactSection = document.getElementById("contact"); const heroSection = document.getElementById("hero"); const mobileLinks = document.querySelectorAll(".mobile-drawer a, .mobile-tabs a"); function triggerFlash() { flash?.classList.add("active"); setTimeout(() => flash?.classList.remove("active"), 130); } clickable.forEach((item) => item.addEventListener("click", triggerFlash)); openButtons.forEach((btn) => btn.addEventListener("click", () => { if (!overlay) return; overlay.classList.add("open"); overlay.setAttribute("aria-hidden", "false"); body.style.overflow = "hidden"; mobileDrawer?.classList.remove("open"); })); function closeOverlay(){ overlay?.classList.remove("open"); overlay?.setAttribute("aria-hidden", "true"); body.style.overflow = ""; } closeBtn?.addEventListener("click", closeOverlay); overlay?.addEventListener("click", (e) => { if (e.target === overlay) closeOverlay(); }); document.addEventListener("keydown", (e) => { if (e.key === "Escape") { closeOverlay(); mobileDrawer?.classList.remove("open"); body.classList.remove("menu-open"); } }); function updateLiveStatus() { if (!liveStatus) return; const now = new Date(); const day = now.getDay(); const minutes = now.getHours() * 60 + now.getMinutes(); let open = 10 * 60; let close = day === 0 ? 18 * 60 : 20 * 60; const isOpen = minutes >= open && minutes < close; liveStatus.classList.remove("open", "closed"); liveStatus.classList.add(isOpen ? "open" : "closed"); liveStatus.textContent = isOpen ? "Open now" : "Closed now"; } updateLiveStatus(); setInterval(updateLiveStatus, 60000); if (menuToggle && mobileDrawer) { menuToggle.addEventListener("click", () => { mobileDrawer.classList.toggle("open"); body.classList.toggle("menu-open"); }); mobileLinks.forEach(link => link.addEventListener("click", () => { mobileDrawer.classList.remove("open"); body.classList.remove("menu-open"); })); document.addEventListener("click", (e) => { if (mobileDrawer.classList.contains("open") && !mobileDrawer.contains(e.target) && !menuToggle.contains(e.target)) { mobileDrawer.classList.remove("open"); body.classList.remove("menu-open"); } }); } function handleFloatingButton() { if (!floatingBook || !contactSection || !heroSection) return; const heroRect = heroSection.getBoundingClientRect(); const contactRect = contactSection.getBoundingClientRect(); const viewportHeight = window.innerHeight; const passedHero = heroRect.bottom < viewportHeight * 0.35; const nearContact = contactRect.top < viewportHeight - 140; floatingBook.classList.remove("is-visible", "hidden-on-contact"); if (nearContact) { floatingBook.classList.add("hidden-on-contact"); return; } if (passedHero) floatingBook.classList.add("is-visible"); } window.addEventListener("scroll", handleFloatingButton); window.addEventListener("resize", handleFloatingButton); handleFloatingButton(); })();
+  </script>
+  <script src="./script.js"></script>
+</body>
+</html>
